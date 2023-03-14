@@ -4,14 +4,12 @@ public class Attribut {
     private String nom;
     private String type;
     private String visibility;
-    private Coordinates coordinates;
 
-
-    public Attribut(String nom, String type, String visibility, Coordinates coordinates) {
+public Attribut(){}
+    public Attribut(String nom, String type, String visibility) {
         this.nom = nom;
         this.type = type;
         this.visibility = visibility;
-        this.coordinates = coordinates;
     }
 
     public String getNom() {
@@ -38,11 +36,5 @@ public class Attribut {
         this.visibility = visibility;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
 }

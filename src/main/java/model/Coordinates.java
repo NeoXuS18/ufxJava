@@ -44,4 +44,9 @@ public class Coordinates {
     public void setHeigth(Double heigth) {
         this.heigth = heigth;
     }
+
+
+    public String toString() {
+        return "X1 : " + getX1() + ", Y1 : " + getY1() + ", Width : " + getWidth() + ", Heigth : " + getHeigth();
+    }
 }

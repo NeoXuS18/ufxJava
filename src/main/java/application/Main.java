@@ -23,16 +23,16 @@ package application;
 //}
 
 
-import java.io.File;
+import model.Classe;
+import model.Element;
+
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-        File f = new File("C:\\Users\\17010-27-09\\Documents\\ProjetCDA");
-        if(f.exists()){
-            System.out.println("Exist");
-        }else {
-            System.out.println("Does not exists");
-        }
+        ArrayList<Classe> elements = UFXReader.read();
+//        JavaWriter.writeJava("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\TestModel", elements);
+
     }
 }

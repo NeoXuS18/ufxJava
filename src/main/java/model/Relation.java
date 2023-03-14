@@ -6,10 +6,13 @@ public class Relation {
     private String nom;
     private final ArrayList<String> roles = new ArrayList<>();
 
+    private String type;
+
     private final ArrayList<Classe> classes = new ArrayList<>();
 
-    public Relation(String nom) {
-        this.nom = nom;
+    private Coordinates coordinates;
+
+    public Relation() {
     }
 
     public String getNom() {
@@ -46,6 +49,19 @@ public class Relation {
 
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
 
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -1,6 +1,9 @@
 package model;
 
-public class Element {
+public abstract class Element {
 
     public void getJavaCode(){};
+    public String getName(){
+        return null;
+    };
 }

@@ -5,12 +5,18 @@ import java.util.ArrayList;
 public class Classe extends Element{
     private String nom;
     private String stereotype;
+    private Coordinates coordinates;
 
     private final ArrayList<Attribut> attributs = new ArrayList<>();
 
-    public Classe(String nom, String stereotype) {
+    private final ArrayList<Method> methods = new ArrayList<>();
+
+    public  Classe(){}
+    public Classe(String nom, String stereotype, Coordinates coordinates) {
         this.nom = nom;
         this.stereotype = stereotype;
+        this.coordinates = coordinates;
+
     }
 
     public String getNom() {
@@ -39,5 +45,41 @@ public class Classe extends Element{
 
     public void removeAttribut(Attribut attribut){
         attributs.remove(attribut);
+    }
+
+    public ArrayList<Method> getMethods() {
+        return methods;
+    }
+
+    public void addMethod(Method method){
+        methods.add(method);
+    }
+
+    public void removeMethod(Method method){
+        methods.remove(method);
+    }
+
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("public " + getStereotype() + " " + getNom() + " , ");
+        for (Attribut attribut : attributs){
+            sb.append(attribut.getVisibility() + " " + attribut.getType() + " " + attribut.getNom());
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getName(){
+        return this.getNom();
     }
 }
