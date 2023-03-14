@@ -1,8 +1,14 @@
-module ufx.java.ufxjava {
+module application {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens ufx.java.ufxjava to javafx.fxml;
-    exports ufx.java.ufxjava;
+    opens application to javafx.fxml;
+    exports application;
+
+    opens controller to javafx.fxml;
+    exports controller;
+
+    opens model to javafx.fxml;
+    exports  model;
 }

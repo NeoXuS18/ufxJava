@@ -1,4 +1,4 @@
-package ufx.java.ufxjava;
+package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
