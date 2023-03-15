@@ -1,16 +1,20 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Relation {
     private String nom;
-    private final ArrayList<String> roles = new ArrayList<>();
+    private final Map<String, String> roles = new HashMap<>();
 
     private String type;
 
     private final ArrayList<Classe> classes = new ArrayList<>();
 
     private Coordinates coordinates;
+
+    private RelationAttributes relationAttributes;
 
     public Relation() {
     }
@@ -23,16 +27,16 @@ public class Relation {
         this.nom = nom;
     }
 
-    public ArrayList<String> getRoles() {
-        return roles;
+    public HashMap<String, String> getRoles() {
+        return (HashMap<String, String>) roles;
     }
 
-    public void addRoles(String role){
-        roles.add(role);
+    public void addRoles(String key, String value){
+        roles.put(key, value);
     }
 
-    public void removeRole(String role){
-        roles.remove(role);
+    public void removeRole(String key){
+        roles.remove(key);
     }
 
 
@@ -63,5 +67,13 @@ public class Relation {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public RelationAttributes getRelationAttributes() {
+        return relationAttributes;
+    }
+
+    public void setRelationAttributes(RelationAttributes relationAttributes) {
+        this.relationAttributes = relationAttributes;
     }
 }

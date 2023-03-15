@@ -27,7 +27,7 @@ public class JavaWriter {
 //                writer.println("package " + Paths.get(path).getFileName().toString());
                 writer.println("");
                 writer.println("");
-                writer.println("public " + element.getStereotype() + " " + "class" + " " + element.getName() + " {");
+                writer.println("public " + element.getStereotype() + " " + "class" + " " + element.getName() + (element.getExtend() != null ? " extends " + element.getExtend() : "") +" {");
                 writer.println("");
                 for (Attribut attribut : element.getAttributs()){
                     writer.println(attribut.getVisibility() + " " + attribut.getType() + " " + attribut.getNom()+";");
@@ -46,9 +46,6 @@ public class JavaWriter {
                 writer.println("");
                 writer.println("}");
 
-
-
-//
                 writer.close();
 
             }catch (Exception e){

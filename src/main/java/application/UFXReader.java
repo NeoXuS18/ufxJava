@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -140,8 +142,28 @@ public class UFXReader {
                                 relation.setType("association");
                             }
                             if (panelAttributes.contains("m1") || panelAttributes.contains("m2")) {
-                                System.out.println(panelAttributes);
+                                int indexm1 = panelAttributes.indexOf("m1");
+                                int indexm2 = panelAttributes.indexOf("m2");
+
+                                if (indexm1 != -1) {
+                                    String m1 = panelAttributes.substring(indexm1 + 3, indexm1 + 7);
+                                    relation.addRoles("m1", m1);
+                                }
+                                if (indexm2 != -1) {
+                                    String m2 = panelAttributes.substring(indexm2 + 3, indexm2 + 7);
+                                    relation.addRoles("m2", m2);
+                                }
+
                             }
+
+
+                            String getAdditionnalAttributes = element.getElementsByTagName("additional_attributes").item(0).getTextContent();
+
+                            String[] additionnalAttributesToArray = getAdditionnalAttributes.split(";");
+
+                            RelationAttributes relationAttributes = new RelationAttributes(Double.parseDouble(additionnalAttributesToArray[0]), Double.parseDouble(additionnalAttributesToArray[1]), Double.parseDouble(additionnalAttributesToArray[additionnalAttributesToArray.length - 2]), Double.parseDouble(additionnalAttributesToArray[additionnalAttributesToArray.length - 1]));
+                            relation.setRelationAttributes(relationAttributes);
+
                             relations.add(relation);
                         }
                     }
@@ -155,10 +177,77 @@ public class UFXReader {
 
     }
 
-    public static void checkAssociation(ArrayList<Classe> classes, ArrayList<Relation> relations){
+    public static void checkAssociation(ArrayList<Classe> classes, ArrayList<Relation> relations) {
 
-        for (Relation relation : relations){
-            System.out.println("Type : " + relation.getType());
+        for (Relation relation : relations) {
+            for (Classe classe : classes) {
+                if (classe.getCoordinates().getX1() <= (relation.getCoordinates().getX1() + relation.getRelationAttributes().getX1())) {
+                    if ((relation.getCoordinates().getX1() + relation.getRelationAttributes().getX1()) <= (classe.getCoordinates().getX1() + classe.getCoordinates().getWidth())) {
+
+                        if (classe.getCoordinates().getY1() <= (relation.getCoordinates().getY1() + relation.getRelationAttributes().getY1())) {
+
+                            if (relation.getCoordinates().getY1() + relation.getRelationAttributes().getY1() <= classe.getCoordinates().getY1() + classe.getCoordinates().getHeigth()) {
+                                switch (relation.getType()) {
+                                    case "heritage" ->
+                                            Objects.requireNonNull(getLastRelation(classes, relation)).setExtend(classe.getName());
+                                    case "aggregation", "association" -> {
+                                        Classe c = getLastRelation(classes, relation);
+                                        if (relation.getRoles().get("m2").contains("*") && c != null) {
+                                            classe.addAttribut(new Attribut("arrayListOf" + c.getNom(), "ArrayList<" + c.getName() + ">", "private"));
+                                        } else if (relation.getRoles().get("m2").contains("1") && c != null) {
+                                            classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
+                                        } else if (c != null) {
+                                            classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m2").charAt(3) + "]", "private"));
+                                        }
+                                        if (relation.getRoles().get("m1").contains("*") && c != null) {
+                                            c.addAttribut(new Attribut("arrayListOf" + classe.getName(), "ArrayList<" + classe.getName() + ">", "private"));
+                                        } else if (relation.getRoles().get("m1").contains("1") && c != null) {
+                                            classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
+                                        } else if (c != null) {
+                                            classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m1").charAt(3) + "]", "private"));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
         }
+
+
+//        for (Classe classe : classes) {
+//            System.out.println("Classe : " + classe.getName());
+//            System.out.println("X1 : " + classe.getCoordinates().getX1());
+//            System.out.println("Y1 : " + classe.getCoordinates().getY1());
+//            System.out.println("Width : " + classe.getCoordinates().getWidth());
+//            System.out.println("Height : " + classe.getCoordinates().getHeigth());
+//            System.out.println("Extend de : " + classe.getExtend());
+//            System.out.println("");
+//        }
+
+//        for (Relation relation : relations) {
+//            System.out.println("Type de relation : " + relation.getType());
+//        }
     }
+
+    public static Classe getLastRelation(ArrayList<Classe> classes, Relation relation) {
+        for (Classe classe : classes) {
+            if (classe.getCoordinates().getX1() <= (relation.getCoordinates().getX1() + relation.getRelationAttributes().getxLast())) {
+                if ((relation.getCoordinates().getX1() + relation.getRelationAttributes().getxLast()) <= (classe.getCoordinates().getX1() + classe.getCoordinates().getWidth())) {
+                    if (classe.getCoordinates().getY1() <= (relation.getCoordinates().getY1() + relation.getRelationAttributes().getyLast())) {
+                        if (relation.getCoordinates().getY1() + relation.getRelationAttributes().getyLast() <= classe.getCoordinates().getY1() + classe.getCoordinates().getHeigth()) {
+                            return classe;
+                        }
+                    }
+
+                }
+
+            }
+        }
+        return null;
+    }
+
 }
