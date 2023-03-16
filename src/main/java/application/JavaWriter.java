@@ -43,6 +43,16 @@ public class JavaWriter {
                     writer.println("");
                 }
 
+                if(element.getConstructor().size() > 0){
+                    writer.println("public " + element.getName() + " () {");
+                    writer.println("");
+                    for (Attribut attribut : element.getConstructor()){
+                        writer.println(attribut.getNom().toLowerCase() + " = new " + attribut.getType() + "();" );
+                        writer.println("");
+                    }
+                    writer.println("}");
+                }
+
                 writer.println("");
                 writer.println("}");
 

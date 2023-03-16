@@ -6,12 +6,10 @@ public class Classe extends Element {
     private String nom;
     private String stereotype;
     private Coordinates coordinates;
-
     private String extend;
-
     private final ArrayList<Attribut> attributs = new ArrayList<>();
-
     private final ArrayList<Method> methods = new ArrayList<>();
+    private final ArrayList<Attribut> constructor = new ArrayList<>();
 
     public Classe() {
     }
@@ -74,9 +72,20 @@ public class Classe extends Element {
     public String getExtend() {
         return extend;
     }
-
     public void setExtend(String extend) {
         this.extend = extend;
+    }
+
+    public void addConstructor(Attribut string){
+        constructor.add(string);
+    }
+
+    public ArrayList<Attribut> getConstructor(){
+        return constructor;
+    }
+
+    public void removeConstructor(Attribut string){
+        constructor.remove(string);
     }
 
     public String toString() {

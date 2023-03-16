@@ -23,7 +23,7 @@ public class UFXReader {
 
         try {
 
-            File f = new File("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\Diagramme AfpaMazon.uxf");
+            File f = new File("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\Diagramme de Cocovoit.uxf");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
@@ -205,6 +205,22 @@ public class UFXReader {
                                             classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
                                         } else if (c != null) {
                                             classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m1").charAt(3) + "]", "private"));
+                                        }
+                                    }
+                                    case "composition" -> {
+                                        Classe c = getLastRelation(classes, relation);
+                                        if(relation.getRoles().get("m2").contains("*") && c != null){
+                                            c.addAttribut(new Attribut("arrayListOf" + classe.getNom(), "ArrayList<" + classe.getName() + ">", "private final"));
+                                            c.addConstructor(new Attribut("arrayListOf" + classe.getNom(), "ArrayList<" + classe.getName() + ">", "private final"));
+
+                                        } else if (relation.getRoles().get("m2").contains("1") && c != null){
+                                            c.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
+                                            c.addConstructor(new Attribut("arrayListOf" + classe.getNom(), "ArrayList<" + classe.getName() + ">", "private final"));
+
+                                        }else if (c != null) {
+                                            c.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m1").charAt(3) + "]", "private"));
+                                            c.addConstructor(new Attribut("arrayListOf" + classe.getNom(), "ArrayList<" + classe.getName() + ">", "private final"));
+
                                         }
                                     }
                                 }
