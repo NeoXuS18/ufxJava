@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>210</y>
+      <w>160</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Utilisateur
+--
+-identifiant : String
+-nom: String
+-prenom:String
+-isStagiaire: Boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>380</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Vehicule
+--
+-nbPlace:int
+-nbBagage : int
+-isFumeur: Boolean
+-marque: String
+-nom: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>260</y>
+      <w>180</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>160.0;10.0;20.0;40.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1080</x>
+      <y>240</y>
+      <w>170</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Afpa
+--
+-nomCentre:String
+-adresse : String
+-ville: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>830</x>
+      <y>430</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Trajet
+--
+-isRetour : Boolean
+-destination: String
+-vehicule : Vehicule
+-heure: Time</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>770</x>
+      <y>650</y>
+      <w>180</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>TrajetRegulier
+--
+-dateFin: Date
+-days : List&lt;String&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>830</x>
+      <y>540</y>
+      <w>100</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>250</y>
+      <w>250</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+creer &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0;210.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>230</y>
+      <w>280</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=0..*
+s'inscris &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;240.0;20.0;240.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>740</x>
+      <y>140</y>
+      <w>440</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Nombre de places contraint par le nombre de place dans le véhicule</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>200</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;50.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>940</x>
+      <y>480</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+r1=aller
+m2=0..1
+r2=retour
+se dirigers vers v</panel_attributes>
+    <additional_attributes>50.0;20.0;210.0;20.0;210.0;80.0;10.0;80.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>980</x>
+      <y>350</y>
+      <w>140</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..*
+m2=1
+contient &gt;</panel_attributes>
+    <additional_attributes>10.0;80.0;100.0;80.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>430</y>
+      <w>400</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..*
+motorise &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;380.0;60.0</additional_attributes>
+  </element>
+</diagram>

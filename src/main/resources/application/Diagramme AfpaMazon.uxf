@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <help_text />
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>610</x>
+      <y>560</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>CompteGratuit</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>300</y>
+      <w>200</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>/Utilisateur/
+      --
+      -nom: String
+      -id: String
+      -mdp : String
+      --
+      +ajoutFilm: void
+      +getFilms: ArrayList&lt;Film&gt;
+      +supprFilm: void
+    </panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>560</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ComptePremium</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>460</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+    </panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>460</y>
+      <w>80</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>240</y>
+      <w>240</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+      m1=0..1
+      r1=famille
+      m2=1..5
+    </panel_attributes>
+    <additional_attributes>130.0;120.0;220.0;120.0;220.0;20.0;10.0;20.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1040</x>
+      <y>510</y>
+      <w>130</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Film
+      --
+      -titre:String
+      -dateSortie: Date</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>670</y>
+      <w>100</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Acteur
+      --
+      -nom:String</panel_attributes>
+    <additional_attributes />
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>570</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-
+      m1=0..*
+      m2=1..*
+      joue ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>830</x>
+      <y>370</y>
+      <w>350</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-
+      m1=0..*
+      m2=0..*
+      regarde &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;310.0;20.0;310.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>830</x>
+      <y>400</y>
+      <w>300</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+      m1=0..*
+      m2=0..5
+      &lt; dernièrement vu </panel_attributes>
+    <additional_attributes>10.0;20.0;260.0;20.0;260.0;110.0</additional_attributes>
+  </element>
+</diagram>
