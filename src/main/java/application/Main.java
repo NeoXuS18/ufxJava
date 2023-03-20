@@ -32,7 +32,7 @@ public class Main {
 
     public static void main(String[] args) {
         ArrayList<Classe> elements = UFXReader.read();
-        JavaWriter.writeJava("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\TestModel", elements);
+//        JavaWriter.writeJava("C:\\Users\\Antonin\\Desktop\\Code\\CDA\\testModel", elements);
 
     }
 }
