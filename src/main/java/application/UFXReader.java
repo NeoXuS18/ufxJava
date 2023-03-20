@@ -15,13 +15,13 @@ import java.util.Objects;
 public class UFXReader {
 
 
-    public static ArrayList<Classe> read() {
+    public static ArrayList<Classe> read(String path) {
         ArrayList<Classe> elements = new ArrayList<>();
         ArrayList<Relation> relations = new ArrayList<>();
 
 
         try {
-            File f = new File("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\Diagramme Médiathèque sa mère.uxf");
+            File f = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 

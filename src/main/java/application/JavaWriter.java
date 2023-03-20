@@ -1,5 +1,6 @@
 package application;
 
+import controller.MainController;
 import model.Attribut;
 import model.Classe;
 import model.Method;
@@ -54,6 +55,19 @@ public class JavaWriter {
                     writer.println("}");
                 }
 
+                if (MainController.constructor){
+                    writer.print("public " + element.getName() + " (");
+                    for(int i = 0; i<element.getAttributs().size(); i++){
+                        writer.print(element.getAttributs().get(i).getType() + " " +element.getAttributs().get(i).getNom() +  (i== element.getAttributs().size() - 1 ?  " " : ", "));
+                    }
+                    writer.println(") {");
+                    for (Attribut attribut : element.getAttributs()){
+                        writer.println("this." + attribut.getNom() + " = " + attribut.getNom() + ";");
+                    }
+
+                    writer.println(" }");
+                }
+
                 writer.println("");
                 writer.println("}");
 
@@ -65,5 +79,13 @@ public class JavaWriter {
         }
 
 
+    }
+
+    public static String capitalize(String str){
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

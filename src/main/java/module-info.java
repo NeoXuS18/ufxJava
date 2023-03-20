@@ -10,6 +10,6 @@ module application {
     opens controller to javafx.fxml;
     exports controller;
 
-    opens model to javafx.fxml;
+    opens model;
     exports  model;
 }
