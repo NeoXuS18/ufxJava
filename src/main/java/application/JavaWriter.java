@@ -2,15 +2,12 @@ package application;
 
 import model.Attribut;
 import model.Classe;
-import model.Element;
 import model.Method;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JavaWriter {
 
@@ -27,7 +24,11 @@ public class JavaWriter {
 //                writer.println("package " + Paths.get(path).getFileName().toString());
                 writer.println("");
                 writer.println("");
-                writer.println("public " + element.getStereotype() + " " + "class" + " " + element.getName() + (element.getExtend() != null ? " extends " + element.getExtend() : "") +" {");
+                if (element.getStereotype().equals("interface")){
+                    writer.println("public " + element.getStereotype() + " " + element.getName() + (element.getExtend() != null ? " extends " + element.getExtend() : "") +" {");
+                }else {
+                    writer.println("public " + element.getStereotype() + " " + "class" + " " + element.getName() + (element.getExtend() != null ? " extends " + element.getExtend() : " ") + (element.getImplement() != null ? " implements " + element.getImplement() : "")+ "{");
+                }
                 writer.println("");
                 for (Attribut attribut : element.getAttributs()){
                     writer.println(attribut.getVisibility() + " " + attribut.getType() + " " + attribut.getNom()+";");

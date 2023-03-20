@@ -6,12 +6,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class UFXReader {
 
@@ -22,7 +21,7 @@ public class UFXReader {
 
 
         try {
-            File f = new File("C:\\Users\\Antonin\\Desktop\\Code\\CDA\\ufxJava\\src\\main\\resources\\application\\Diagramme Médiathèque sa mère.uxf");
+            File f = new File("C:\\Users\\17010-27-09\\Documents\\ProjetCDA\\Diagramme Médiathèque sa mère.uxf");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
@@ -58,6 +57,38 @@ public class UFXReader {
                                 panelSplit[0] = panelSplit[0].replaceAll("/", "");
 //                              Apply Abstract to stereotype at this class
                                 classe.setStereotype("abstract");
+                            } else if (panelSplit[0].contains("<<")) {
+//                                Replace "<<" to ""
+                                panelSplit[0] = panelSplit[0].replaceAll("<<", "");
+                                panelSplit[0] = panelSplit[0].replaceAll(">>", "");
+                                panelSplit[0] = panelSplit[0].replaceAll("interface", "");
+                                classe.setStereotype("interface");
+                                boolean isClose = false;
+                                while (!isClose) {
+                                    if (panelSplit[1].contains("+")) {
+                                        String meth;
+//                                        meth = [name, return type of method]
+                                        Method method = new Method();
+                                        panelSplit[1] = panelSplit[1].substring(1);
+                                        int index = panelSplit[1].indexOf("+");
+                                        if (index != -1) {
+                                            meth = panelSplit[1].substring(0, index);
+                                            panelSplit[1] = panelSplit[1].substring(index);
+                                        } else {
+                                            meth = panelSplit[1];
+                                        }
+
+                                        String[] getParameters = panelAttribute.split("--");
+                                        String[] info = meth.split(":");
+                                        method.setVisibility("public");
+                                        method.setNom(info[0].substring(0, info[0].indexOf("(")) + "(" + getParameters[1].substring(getParameters[1].indexOf("(") + 1, getParameters[1].indexOf(")")) + ")");
+                                        method.setTypeReturn(info[1]);
+                                        method.setStatic(true);
+                                        classe.addMethod(method);
+                                    } else {
+                                        isClose = true;
+                                    }
+                                }
                             } else {
                                 classe.setStereotype("");
                             }
@@ -108,10 +139,10 @@ public class UFXReader {
                                                 meth = panelSplit[2];
                                             }
 
-
+                                            String[] getParameters = panelAttribute.split("--");
                                             String[] info = meth.split(":");
                                             method.setVisibility("public");
-                                            method.setNom(info[0]);
+                                            method.setNom(info[0].substring(0, info[0].indexOf("(")) + "(" + getParameters[2].substring(getParameters[2].indexOf("(") + 1, getParameters[2].indexOf(")")) + ")");
                                             method.setTypeReturn(info[1]);
                                             method.setStatic(true);
                                             classe.addMethod(method);
@@ -139,6 +170,12 @@ public class UFXReader {
                                 relation.setType("aggregation");
                             } else if (panelAttributes.contains("lt=-")) {
                                 relation.setType("association");
+                            } else if (panelAttributes.contains("lt=<.")) {
+                                if (panelAttributes.contains("<<realize>>")){
+                                    relation.setType("implements");
+                                }else {
+                                    relation.setType("comment");
+                                }
                             } else {
                                 relation.setType("comment");
                             }
@@ -189,41 +226,18 @@ public class UFXReader {
                         if (classe.getCoordinates().getY1() <= (relation.getCoordinates().getY1() + relation.getRelationAttributes().getY1())) {
                             if (relation.getCoordinates().getY1() + relation.getRelationAttributes().getY1() <= classe.getCoordinates().getY1() + classe.getCoordinates().getHeigth()) {
                                 switch (relation.getType()) {
-                                    case "heritage" ->{
-                                      Classe c = getLastRelation(classes, relation);
-                                        System.out.println(c);
-
-                                    }
+                                    case "heritage" ->
+                                            Objects.requireNonNull(getLastRelation(classes, relation)).setExtend(classe.getName());
                                     case "aggregation", "association" -> {
                                         relation.addClasse(classe);
                                         Classe c = getLastRelation(classes, relation);
                                         if (c == null) {
-                                            Relation relation1 = checkClassAssociation(classes, relation, relations);
+                                            Relation relation1 = checkClassAssociation(relation, relations);
                                             assert relation1 != null;
-                                            relation1.addClasse(classe);
-                                            associations.add(relation1);
+                                            associations.add(relation);
+                                            relation.setAssociation(relation1);
                                         } else {
                                             relation.addClasse(c);
-                                            if (relation.getRoles().size() > 1) {
-                                                if (relation.getRoles().get("m2") != null) {
-                                                    if (relation.getRoles().get("m2").contains("*")) {
-                                                        classe.addAttribut(new Attribut("arrayListOf" + c.getNom(), "ArrayList<" + c.getName() + ">", "private"));
-                                                    } else if (relation.getRoles().get("m2").contains("1")) {
-                                                        classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
-                                                    } else {
-                                                        classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m2").charAt(3) + "]", "private"));
-                                                    }
-                                                }
-                                                if (relation.getRoles().get("m1") != null) {
-                                                    if (relation.getRoles().get("m1").contains("*")) {
-                                                        c.addAttribut(new Attribut("arrayListOf" + classe.getName(), "ArrayList<" + classe.getName() + ">", "private"));
-                                                    } else if (relation.getRoles().get("m1").contains("1")) {
-                                                        classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
-                                                    } else {
-                                                        classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m1").charAt(3) + "]", "private"));
-                                                    }
-                                                }
-                                            }
                                         }
                                     }
                                     case "composition" -> {
@@ -243,32 +257,22 @@ public class UFXReader {
                                             }
                                         }
                                     }
+                                    case "implements" -> {
+                                        Classe c = getLastRelation(classes, relation);
+                                        assert c != null;
+                                        c.setImplement(classe.getName());
+                                    }
                                 }
                             }
                         }
-
                     }
-
                 }
             }
         }
 
         checkClassAssociationBis(associations, relations);
 
-
-//        for (Classe classe : classes) {
-//            System.out.println("Classe : " + classe.getName());
-//            System.out.println("X1 : " + classe.getCoordinates().getX1());
-//            System.out.println("Y1 : " + classe.getCoordinates().getY1());
-//            System.out.println("Width : " + classe.getCoordinates().getWidth());
-//            System.out.println("Height : " + classe.getCoordinates().getHeigth());
-//            System.out.println("Extend de : " + classe.getExtend());
-//            System.out.println("");
-//        }
-
-//        for (Relation relation : relations) {
-//            System.out.println("Type de relation : " + relation.getType());
-//        }
+        addAttribut(relations, classes);
     }
 
     public static Classe getLastRelation(ArrayList<Classe> classes, Relation relation) {
@@ -286,7 +290,7 @@ public class UFXReader {
         return null;
     }
 
-    public static Relation checkClassAssociation(ArrayList<Classe> classes, Relation relation, ArrayList<Relation> relations) {
+    public static Relation checkClassAssociation(Relation relation, ArrayList<Relation> relations) {
         for (Relation relation1 : relations) {
             if (relation1.getCoordinates().getX1() <= (relation.getCoordinates().getX1() + relation.getRelationAttributes().getxLast())) {
                 if ((relation.getCoordinates().getX1() + relation.getRelationAttributes().getxLast()) <= (relation1.getCoordinates().getX1() + relation1.getCoordinates().getWidth())) {
@@ -301,7 +305,61 @@ public class UFXReader {
         return null;
     }
 
-    public static void checkClassAssociationBis(ArrayList<Relation> associations, ArrayList<Relation> relations){
-        System.out.println(associations.get(0));
+    public static void checkClassAssociationBis(ArrayList<Relation> associations, ArrayList<Relation> relations) {
+        for (Relation association : associations) {
+            association.getAssociation().setType("ClasseAssociation");
+            Classe associationClass = association.getClasses().get(0);
+            Relation associationRelation = association.getAssociation();
+
+            if (associationRelation.getRoles().size() > 1) {
+                if (associationRelation.getRoles().get("m2") != null) {
+                    if (associationRelation.getRoles().get("m2").contains("*")) {
+                        associationClass.addAttribut(new Attribut("arrayListOf" + associationRelation.getClasses().get(1).getName(), "ArrayList<" + associationRelation.getClasses().get(1).getName() + ">", "private"));
+                    } else if (associationRelation.getRoles().get("m2").contains("1")) {
+                        associationClass.addAttribut(new Attribut(associationRelation.getClasses().get(1).getName().toLowerCase(), associationRelation.getClasses().get(1).getName(), "private"));
+                    } else {
+                        associationClass.addAttribut(new Attribut("arrayOf" + associationRelation.getClasses().get(1).getName(), associationRelation.getClasses().get(1).getName() + "[" + associationRelation.getRoles().get("m2").charAt(3) + "]", "private"));
+                    }
+                }
+                if (associationRelation.getRoles().get("m1") != null) {
+                    if (associationRelation.getRoles().get("m1").contains("*")) {
+                        associationClass.addAttribut(new Attribut("arrayListOf" + associationRelation.getClasses().get(0).getName(), "ArrayList<" + associationRelation.getClasses().get(0).getName() + ">", "private"));
+                    } else if (associationRelation.getRoles().get("m1").contains("1")) {
+                        associationClass.addAttribut(new Attribut(associationRelation.getClasses().get(0).getName().toLowerCase(), associationRelation.getClasses().get(0).getName(), "private"));
+                    } else {
+                        associationClass.addAttribut(new Attribut("arrayOf" + associationRelation.getClasses().get(0).getName(), associationRelation.getClasses().get(0).getName() + "[" + associationRelation.getRoles().get("m1").charAt(3) + "]", "private"));
+                    }
+                }
+            }
+        }
+    }
+
+    public static void addAttribut(ArrayList<Relation> relations, ArrayList<Classe> classes) {
+        for (Relation relation : relations) {
+            if (relation.getType().equals("association")) {
+                if (relation.getRoles().size() > 1) {
+                    Classe c = relation.getClasses().get(1);
+                    Classe classe = relation.getClasses().get(0);
+                    if (relation.getRoles().get("m2") != null) {
+                        if (relation.getRoles().get("m2").contains("*")) {
+                            classe.addAttribut(new Attribut("arrayListOf" + c.getNom(), "ArrayList<" + c.getName() + ">", "private"));
+                        } else if (relation.getRoles().get("m2").contains("1")) {
+                            classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
+                        } else {
+                            classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m2").charAt(3) + "]", "private"));
+                        }
+                    }
+                    if (relation.getRoles().get("m1") != null) {
+                        if (relation.getRoles().get("m1").contains("*")) {
+                            c.addAttribut(new Attribut("arrayListOf" + classe.getName(), "ArrayList<" + classe.getName() + ">", "private"));
+                        } else if (relation.getRoles().get("m1").contains("1")) {
+                            classe.addAttribut(new Attribut(c.getNom().toLowerCase(), c.getName(), "private"));
+                        } else {
+                            classe.addAttribut(new Attribut("arrayOf" + c.getName(), c.getName() + "[" + relation.getRoles().get("m1").charAt(3) + "]", "private"));
+                        }
+                    }
+                }
+            }
+        }
     }
 }

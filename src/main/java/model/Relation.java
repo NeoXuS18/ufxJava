@@ -16,6 +16,8 @@ public class Relation {
 
     private RelationAttributes relationAttributes;
 
+    private Relation association;
+
     public Relation() {
     }
 
@@ -75,5 +77,13 @@ public class Relation {
 
     public void setRelationAttributes(RelationAttributes relationAttributes) {
         this.relationAttributes = relationAttributes;
+    }
+
+    public Relation getAssociation() {
+        return association;
+    }
+
+    public void setAssociation(Relation association) {
+        this.association = association;
     }
 }

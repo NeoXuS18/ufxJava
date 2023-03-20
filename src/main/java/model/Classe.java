@@ -7,6 +7,8 @@ public class Classe extends Element {
     private String stereotype;
     private Coordinates coordinates;
     private String extend;
+
+    private String implement;
     private final ArrayList<Attribut> attributs = new ArrayList<>();
     private final ArrayList<Method> methods = new ArrayList<>();
     private final ArrayList<Attribut> constructor = new ArrayList<>();
@@ -100,5 +102,13 @@ public class Classe extends Element {
     @Override
     public String getName() {
         return this.getNom();
+    }
+
+    public String getImplement() {
+        return implement;
+    }
+
+    public void setImplement(String implement) {
+        this.implement = implement;
     }
 }
