@@ -37,6 +37,8 @@ public class MainController {
 
     @FXML
     public void submitForm() {
+        ArrayList<Classe> elements = UFXReader.read("C:\\Users\\Antonin\\Desktop\\Code\\CDA\\ufxJava\\src\\main\\resources\\Diagramme Médiathèque sa mère.uxf");
+
         if (pathOfuxfFile != null){
             if (getterAndSetterCheckbox.isSelected()){
                 getterAndSetter = true;
@@ -48,9 +50,8 @@ public class MainController {
             }else {
                 constructor = false;
             }
-            ArrayList<Classe> elements = UFXReader.read(pathOfuxfFile);
             if(pathToExport != null){
-                JavaWriter.writeJava(pathToExport, elements);
+//                JavaWriter.writeJava(pathToExport, elements);
             }else {
                 labelPath.setText("Merci de renseigner un dossier");
             }

@@ -14,7 +14,7 @@
       -cote: long
       -titre: String
       -isDispo:boolean</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -28,7 +28,7 @@
       --
       -auteur : String
       _-caution: double_</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -41,7 +41,7 @@
     <panel_attributes>Jounal
       --
       -date: Date</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -54,7 +54,7 @@
     <panel_attributes>Livre
       --
       -auteur : String</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -98,13 +98,13 @@
       <h>120</h>
     </coordinates>
     <panel_attributes>/Utilisateur/
-      --
-      -numero: long
-      -nom : String
-      -prenom: String
-      -mdp: String
-      -email: String</panel_attributes>
-    <additional_attributes />
+--
+_-numero: long_
++nom : String
+#prenom: String
+-mdp: String
+-email: String</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -121,7 +121,7 @@
       +profilClient(long id): Client
       +modifyDocument(Document doc) :void
       +modifyClient(Client client): void</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -135,7 +135,7 @@
       --
       -adresse : String
     </panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -146,7 +146,7 @@
       <h>30</h>
     </coordinates>
     <panel_attributes>Benevole</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -206,7 +206,7 @@
     <panel_attributes>Emprunt
       --
       -date : Date</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -231,7 +231,7 @@
       --
       - prix: double
       -nom : String</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -239,7 +239,7 @@
       <x>380</x>
       <y>270</y>
       <w>150</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=-
       m1=0..1
@@ -260,7 +260,7 @@
       +addDocument(): void
       +getAllDocument(): ArrayList&lt;Document&gt;
       +getOneDocument(long cote) : Document</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -282,7 +282,7 @@
       <h>30</h>
     </coordinates>
     <panel_attributes>Impossible de supprimer un document du catalogue</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
@@ -300,7 +300,7 @@
     <coordinates>
       <x>820</x>
       <y>390</y>
-      <w>70</w>
+      <w>100</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -333,14 +333,14 @@
       validerEmprunt
       --
       +validerEmprunt(Emprunt emprunt): boolean</panel_attributes>
-    <additional_attributes />
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1070</x>
       <y>300</y>
-      <w>100</w>
+      <w>120</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;.

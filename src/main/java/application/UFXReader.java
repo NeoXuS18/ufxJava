@@ -70,6 +70,7 @@ public class UFXReader {
 //                                        meth = [name, return type of method]
                                         Method method = new Method();
                                         panelSplit[1] = panelSplit[1].substring(1);
+
                                         int index = panelSplit[1].indexOf("+");
                                         if (index != -1) {
                                             meth = panelSplit[1].substring(0, index);
@@ -100,25 +101,54 @@ public class UFXReader {
                                 boolean isFinish = false;
 
                                 while (!isFinish) {
-                                    if (panelSplit[1].contains("-")) {
-                                        String att;
-//                                        att = [name, type of attribut]
-                                        Attribut attribut = new Attribut();
-                                        panelSplit[1] = panelSplit[1].substring(1);
-                                        int index = panelSplit[1].indexOf("-");
-                                        if (index != -1) {
-                                            att = panelSplit[1].substring(0, index);
-                                            panelSplit[1] = panelSplit[1].substring(index);
-                                        } else {
-                                            att = panelSplit[1];
+                                    String att = "";
+                                    Attribut attribut = new Attribut();
+                                    if (Main.checkIfOtherAttribut(panelSplit[1])) {
+                                        char firstCharacterIs = panelSplit[1].charAt(0);
+                                        if (firstCharacterIs == '_'){
+                                            attribut.setStatic(true);
+                                            panelSplit[1] = panelSplit[1].substring(1);
+                                            panelSplit[1] = panelSplit[1].replaceFirst("_", "");
+                                            firstCharacterIs =panelSplit[1].charAt(0);
+                                        }
+                                        if (firstCharacterIs == '-') {
+                                            panelSplit[1] = panelSplit[1].substring(1);
+                                            if (Main.checkIfOtherAttribut(panelSplit[1])) {
+                                               ArrayList<String> result = getAttributeAndChangeAllLine(panelSplit[1]);
+                                               att = result.get(0);
+                                               panelSplit[1] =result.get(1);
+                                            } else {
+                                                att = panelSplit[1];
+                                            }
+                                            attribut.setVisibility("private");
+                                        } else if (firstCharacterIs == '+'){
+                                            panelSplit[1] = panelSplit[1].substring(1);
+                                            if (Main.checkIfOtherAttribut(panelSplit[1])){
+                                                ArrayList<String> result = getAttributeAndChangeAllLine(panelSplit[1]);
+                                                att = result.get(0);
+                                                panelSplit[1] =result.get(1);
+                                            }else {
+                                                att = panelSplit[1];
+                                            }
+                                            attribut.setVisibility("public");
+                                        } else if (firstCharacterIs == '#'){
+                                            panelSplit[1] = panelSplit[1].substring(1);
+                                            if (Main.checkIfOtherAttribut(panelSplit[1])){
+                                                ArrayList<String> result = getAttributeAndChangeAllLine(panelSplit[1]);
+                                                att = result.get(0);
+                                                panelSplit[1] =result.get(1);
+                                            }else {
+                                                att = panelSplit[1];
+                                            }
+                                            attribut.setVisibility("protected");
                                         }
 
                                         String[] info = att.split(":");
-                                        attribut.setVisibility("private");
                                         attribut.setNom(info[0]);
                                         attribut.setType(info[1]);
 
                                         classe.addAttribut(attribut);
+
                                     } else {
                                         isFinish = true;
                                     }
@@ -162,18 +192,18 @@ public class UFXReader {
                             Coordinates coordinate = new Coordinates(Double.parseDouble(element.getElementsByTagName("x").item(0).getTextContent()), Double.parseDouble(element.getElementsByTagName("y").item(0).getTextContent()), Double.parseDouble(element.getElementsByTagName("w").item(0).getTextContent()), Double.parseDouble(element.getElementsByTagName("h").item(0).getTextContent()));
                             relation.setCoordinates(coordinate);
                             String panelAttributes = element.getElementsByTagName("panel_attributes").item(0).getTextContent().replaceAll("\\s+", "");
-                            if (panelAttributes.contains("=<<-")) {
+                            if (panelAttributes.contains("lt=<<-")) {
                                 relation.setType("heritage");
-                            } else if (panelAttributes.contains("=<<<<<-")) {
+                            } else if (panelAttributes.contains("lt=<<<<<-")) {
                                 relation.setType("composition");
                             } else if (panelAttributes.contains("lt=<<<<-")) {
                                 relation.setType("aggregation");
                             } else if (panelAttributes.contains("lt=-")) {
                                 relation.setType("association");
                             } else if (panelAttributes.contains("lt=<.")) {
-                                if (panelAttributes.contains("<<realize>>")){
+                                if (panelAttributes.contains("<<realize>>")) {
                                     relation.setType("implements");
-                                }else {
+                                } else {
                                     relation.setType("comment");
                                 }
                             } else {
@@ -362,4 +392,97 @@ public class UFXReader {
             }
         }
     }
+
+    public static int getIndexOfNextAttribute(int indexPrivate, int indexPublic, int indexProtected, int indexStatic) {
+        if (indexPrivate != -1) {
+            if (indexPublic != -1) {
+                if (indexProtected != -1) {
+                    if (indexStatic != -1) {
+                        if (indexPrivate > indexPublic) {
+                            if (indexStatic > indexPublic) {
+                                return Math.min(indexPublic, indexProtected);
+                            } else {
+                                return Math.min(indexStatic, indexProtected);
+                            }
+                        } else {
+                            if (indexStatic > indexPrivate) {
+                                return Math.min(indexPrivate, indexProtected);
+                            } else {
+                                return Math.min(indexStatic, indexProtected);
+                            }
+                        }
+                    } else {
+                        if (indexPublic > indexPrivate) {
+                            return Math.min(indexProtected, indexPrivate);
+                        } else {
+                            return Math.min(indexPublic, indexProtected);
+                        }
+                    }
+                } else {
+                    if (indexStatic != -1) {
+                        if (indexStatic > indexPublic) {
+                            return Math.min(indexPublic, indexPrivate);
+                        } else {
+                            return Math.min(indexStatic, indexPrivate);
+                        }
+                    } else {
+                        return Math.min(indexPublic, indexPrivate);
+                    }
+                }
+            } else if (indexProtected != -1) {
+                if (indexStatic != -1) {
+                    if (indexStatic > indexProtected) {
+                        return Math.min(indexProtected, indexPrivate);
+                    } else {
+                        return Math.min(indexStatic, indexPrivate);
+                    }
+                } else {
+                    return Math.min(indexProtected, indexPrivate);
+                }
+            } else {
+                if (indexStatic != -1) {
+                    return Math.min(indexStatic, indexPrivate);
+                } else {
+                    return indexPrivate;
+                }
+            }
+        } else if (indexPublic != -1) {
+            if (indexProtected != -1) {
+                if (indexStatic != -1) {
+                    if (indexProtected > indexStatic) {
+                        return Math.min(indexStatic, indexPublic);
+                    } else {
+                        return Math.min(indexProtected, indexPublic);
+                    }
+                } else {
+                    return Math.min(indexProtected, indexPublic);
+                }
+            } else {
+                if (indexStatic != -1) {
+                    return Math.min(indexStatic, indexPublic);
+                } else {
+                    return indexPublic;
+                }
+            }
+        } else {
+            if (indexStatic != -1) {
+                return Math.min(indexStatic, indexProtected);
+            } else {
+                return indexProtected;
+            }
+        }
+    }
+
+    public static ArrayList<String> getAttributeAndChangeAllLine(String string) {
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        int indexPrivate = string.indexOf("-");
+        int indexPublic = string.indexOf("+");
+        int indexProtected = string.indexOf("#");
+        int indexStatic = string.indexOf("_");
+        int indexNextAttribute = getIndexOfNextAttribute(indexPrivate, indexPublic, indexProtected, indexStatic);
+        stringArrayList.add(string.substring(0, indexNextAttribute));
+        stringArrayList.add(string.substring(indexNextAttribute));
+        return stringArrayList;
+    }
+
 }

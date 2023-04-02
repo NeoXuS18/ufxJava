@@ -4,6 +4,7 @@ public class Attribut {
     private String nom;
     private String type;
     private String visibility;
+    private boolean isStatic;
 
 public Attribut(){}
     public Attribut(String nom, String type, String visibility) {
@@ -37,4 +38,11 @@ public Attribut(){}
     }
 
 
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean aStatic) {
+        isStatic = aStatic;
+    }
 }

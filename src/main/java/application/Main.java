@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main extends Application {
     @Override
@@ -22,5 +24,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public static boolean checkIfOtherAttribut(String str){
+        Pattern pattern = Pattern.compile("[-+#]", Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.find();
     }
 }
